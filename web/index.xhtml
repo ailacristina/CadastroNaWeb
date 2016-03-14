@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>#{msg['agenda']}</title>
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"/>
+        <h:outputStylesheet name="primefaces.css" library="primefaces"/>
+
+    </h:head>
+    <h:body>
+        
+        <h:form id="form">
+            <p:growl id="msgs"/>
+            <p:panel header="Login">
+                <div class="ui-fluid">
+                    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-1, ui-grid-col-4" styleClass="ui-panelgrid-blank" >
+                        <p:outputLabel value="Login:" for="txLogin"/>
+                        <p:inputText id="txLogin" required="true" 
+                                     value="#{terapeutaBean.novoTerapeuta.login}"
+                                     requiredMessage="Por favor, informe o login!"/>
+
+                        <p:outputLabel value="#{msg['senha']}" for="txSenha"/>
+                        <p:password id="txSenha" value="#{terapeutaBean.novoTerapeuta.senha }" 
+                                    required="true" requiredMessage="Por favor, informe a senha!"/> 
+
+                        <p:commandButton value="#{msg['entrar']}" validateClient="true" update="@form" action="#{terapeutaBean.entrar()}" style="margin-top: 20px"/>
+                        <p:commandButton value="#{msg['cadastrar']}" action="#{terapeutaBean.queroMeCadastrar()}" immediate="true" style="margin-top: 20px;" />
+                    </p:panelGrid> 
+                </div>
+            </p:panel> 
+            <h:commandButton action="#{language.changeLanguage('')}"
+                             value="Português" immediate="true"/>
+            <h:outputText value=" " />
+            <h:commandButton action="#{language.changeLanguage('en')}"
+                value="English" immediate="true"/>
+        </h:form>
+    </h:body>
+</html>
+

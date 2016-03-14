@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+    <h:head>
+        <meta charset="utf-8"/>
+        <title>#{msg['agenda']}</title>
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:growl id="msgs"/>
+            <p:panel header="#{msg['cadastro']}">
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-2, ui-grid-col-4">        
+
+                    <p:outputLabel value="#{msg['nome']}" for="txNome"/>
+                    <p:inputText id="txNome" value="#{terapeutaBean.novoTerapeuta.nome}"
+                                 required="true" requiredMessage="#{msg['nomeMsg']}"/>
+
+                    <p:outputLabel value="Login: " for="txLogin"/>
+                    <p:inputText id="txLogin" value="#{terapeutaBean.novoTerapeuta.login}"
+                                 required="true" requiredMessage="#{msg['loginMsg']}"/>
+
+                    <p:outputLabel value="E-mail: " for="txEmail"/>
+                    <p:inputText id="txEmail" value="#{terapeutaBean.novoTerapeuta.email}"
+                                 required="true" requiredMessage="#{msg['emailMsg']}"/>
+
+                    <p:outputLabel for="sexo" value="#{msg['sexo']}" />
+                    <p:selectOneMenu id="sexo" value="#{terapeutaBean.novoTerapeuta.sexo}" style="width:194px"
+                                     required="true" requiredMessage="#{msg['sexoMsg']}">
+                        <f:selectItem itemLabel="#{msg['selecioneUm']}" itemValue="" />
+                        <f:selectItem itemLabel="#{msg['feminino']}" itemValue="Feminino" />
+                        <f:selectItem itemLabel="#{msg['masculino']}" itemValue="Masculino" />
+                        <f:selectItem itemLabel="#{msg['naoDeclarar']}" itemValue="Não declarar" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="CPF: " for="txCPF"/>
+                    <p:inputMask mask="999.999.999-99" id="txCPF" value="#{terapeutaBean.novoTerapeuta.cpf}"
+                                 required="true" requiredMessage="#{msg['cpfMsg']}"/>
+
+                    <h:outputLabel value="#{msg['nascimento']}" for="txNascimento"/>
+                    <p:calendar id="txNascimento" required="true" 
+                                value="#{terapeutaBean.novoTerapeuta.nascimento}"
+                                locale="de"
+                                requiredMessage="#{msg['nascMsg']}"
+                                maxdate="#{dataBean.dataAtual}"/>
+                    <p:outputLabel value="#{msg['senha']}" for="txSenha"/>
+                    <p:password id="txSenha" value="#{terapeutaBean.novoTerapeuta.senha}" feedback="true"
+                                promptLabel="#{msg['senhaPrompt']}" weakLabel="#{msg['senhaFraca']}"
+                                goodLabel="#{msg['senhaBom']}" strongLabel="#{msg['senhaForte']}" 
+                                required="true" requiredMessage="#{msg['senhaPrompt']}"/>
+                    <p:outputLabel value="#{msg['confSenha']}" for="txConfirmSenha"/>
+                    <p:password id="txConfirmSenha" value="#{terapeutaBean.confirmarSenha}" feedback="true"
+                                promptLabel="Por favor, entre com a senha." weakLabel="#{msg['senhaFraca']}"
+                                goodLabel="#{msg['senhaBom']}" strongLabel="#{msg['senhaForte']}" 
+                                required="true" requiredMessage="#{msg['senhaConfirm']}"/>
+
+
+                    <p:commandButton value="#{msg['cadastrar']}" validateClient="true" update="form" action="#{terapeutaBean.salvar()}" 
+                                     style="margin-top: 10px"/>  
+                    <p:commandButton value="#{msg['voltar']}" action="#{terapeutaBean.voltarIndex()}"
+                                     style="margin-top: 10px;" immediate="true"/>
+                </p:panelGrid>               
+            </p:panel>
+        </h:form>
+
+    </h:body>
+</html>

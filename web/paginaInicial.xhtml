@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>#{msg['agenda']}</title>
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"/>
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true" />
+            <p:panel header="#{msg['agenda']}">    
+                
+                <p:panelGrid layout="grid" columns="2" styleClass="ui-panelgrid-blank">
+                    
+                    <p:dataTable id="table" emptyMessage="#{msg['emptyMsg']}"
+                                 value="#{consultaBean.listaConsultas}"
+                                 var="consulta"
+                                 sortBy="#{consulta.hora}"
+                                 style="text-align:center; width: 1000px"
+                                 reflow="true" 
+                                 rows="10"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                        <p:column style="width:40px;text-align: center">
+                            <p:commandLink update="table :form:msgs" actionListener="#{consultaBean.concluir(consulta)}" immediate="true">
+                                <i class="fa fa-remove"></i>
+                            </p:commandLink>                    
+                        </p:column>
+                        <p:column style="width:110px;" headerText="#{msg['dia']}" sortBy="#{consulta.dataCons}" >
+                            <h:outputText value="#{consulta.dataCons}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="width:110px" headerText="#{msg['hora']}" sortBy="#{consulta.hora}">
+                            <h:outputText value="#{consulta.hora}">
+                                <f:convertDateTime pattern="HH:mm" />
+                            </h:outputText>
+                        </p:column>                
+                        <p:column style="width:110px" headerText="#{msg['cliente']}" sortBy="#{consulta.cliente}">
+                            <h:outputText value="#{consulta.cliente}"/>
+                        </p:column>
+                        <p:column style="width:110px" headerText="#{msg['convenio']}" sortBy="#{consulta.convenio}">
+                            <h:outputText value="#{consulta.convenio}"/>
+                        </p:column>
+                        <p:column style="width:110px" headerText="#{msg['tratamento']}" sortBy="#{consulta.tratamento}">
+                            <h:outputText value="#{consulta.tratamento}"/>
+                        </p:column>
+
+                    </p:dataTable>  
+
+                    <br/>
+                    <p:commandButton value="#{msg['novaCons']}"  
+                                     oncomplete="PF('itemDialog').show()"
+                                     process="@this" update="itemPanel">
+                        <p:resetInput target="itemPanel"/>
+                    </p:commandButton>
+
+                </p:panelGrid>
+                <p:dialog widgetVar="itemDialog" header="#{msg['novaCons']}" 
+                          resizable="false" style="min-width: 300px" 
+                          responsive="true">
+                    <h:panelGroup id="itemPanel" layout="block" styleClass="ui-fluid">
+                        <p:messages id="msgDialog" autoUpdate="false"/>
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col4, ui-grid-col8" layout="grid"
+                                     styleClass="panelgrid-noborder">
+
+                            <p:outputLabel value="#{msg['cliente']}" for="txCliente"/>
+                            <p:inputText id="txCliente" required="true" 
+                                         value="#{consultaBean.novaConsulta.cliente}"
+                                         requiredMessage="#{msg['clienteMsg']}"/>
+                            <p:outputLabel value="#{msg['data']}" for="txData"/>
+                            <p:calendar id="txData" required="true" 
+                                        value="#{consultaBean.novaConsulta.dataCons}"
+                                        locale="pt_BR"
+                                        requiredMessage="#{msg['dateMsg']}"
+                                        mindate="#{dataBean.dataAtual}"/>
+                            <p:outputLabel value="#{msg['hora']}" for="txHora"/>
+                            <p:inputText id="txHora" required="true"
+                                         value="#{consultaBean.novaConsulta.hora}"
+                                         requiredMessage="#{msg['horaMsg']}">
+                                <f:convertDateTime pattern="HH:mm" />
+                            </p:inputText>                             
+                            <p:outputLabel value="#{msg['convenio']}" for="txConvenio"/>
+                            <p:inputText id="txConvenio" required="true" 
+                                         value="#{consultaBean.novaConsulta.convenio}"
+                                         requiredMessage="#{msg['convenioMsg']}"/>
+                            <p:outputLabel value="#{msg['tratamento']}" for="txTratamento"/>
+                            <p:inputText id="txTratamento" required="true" 
+                                         value="#{consultaBean.novaConsulta.tratamento}"
+                                         requiredMessage="#{msg['tratamentoMsg']}"/>
+                            <p:outputLabel/>
+                            <p:commandButton value="#{msg['salvar']}" 
+                                             validateClient="true"
+                                             update="table itemPanel" 
+                                             action="#{consultaBean.salvar()}"
+                                             process="itemPanel"
+                                             oncomplete="if(!args.validationFailed) PF('itemDialog').hide()"/>
+                            
+
+                        </p:panelGrid>
+
+                    </h:panelGroup> 
+                </p:dialog>
+<p:commandButton value="#{msg['sair']}" action="#{terapeutaBean.sair()}"
+                                     style="margin-top: 10px;" immediate="true"/>
+            </p:panel>
+        </h:form>
+
+    </h:body>
+</html>
+
